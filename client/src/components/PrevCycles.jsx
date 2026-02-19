@@ -11,18 +11,31 @@ export function PrevCycles({ token }) {
       .catch(() => setCycles([]));
   }, [token]);
 
+  const deleteCycle = async (id) => {
+    if (!confirm("Delete this cycle and its logs?")) return;
+    try {
+      const res = await fetch(`/api/cycles/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+      if (res.ok) setCycles((prev) => prev.filter((c) => c._id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="rounded-xl bg-white p-4 shadow">
       <h4 className="mb-3 font-medium">Previous cycles</h4>
       <ul className="space-y-2 text-sm text-neutral-700">
         {cycles.length === 0 && <li className="text-neutral-400">No cycles yet</li>}
         {cycles.map((c) => (
-          <li key={c._id} className="flex justify-between">
+          <li key={c._id} className="flex justify-between items-center">
             <div>
               <div className="font-medium">{new Date(c.startDate).toDateString()}</div>
               <div className="text-xs text-neutral-500">Length: {c.cycleLength || "—"} days</div>
             </div>
-            <div className="text-xs text-neutral-500">{c.endDate ? new Date(c.endDate).toDateString() : "Ongoing"}</div>
+            <div className="flex items-center gap-3">
+              <div className="text-xs text-neutral-500">{c.endDate ? new Date(c.endDate).toDateString() : "Ongoing"}</div>
+              <button onClick={() => deleteCycle(c._id)} className="text-xs text-red-500">Delete</button>
+            </div>
           </li>
         ))}
       </ul>

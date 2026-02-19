@@ -12,6 +12,16 @@ export function Logs({ token }) {
       .then(setLogs);
   }, [token]);
 
+  const deleteLog = async (id) => {
+    if (!confirm("Delete this log?")) return;
+    try {
+      const res = await fetch(`/api/logs/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+      if (res.ok) setLogs((prev) => prev.filter((l) => l._id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const save = async (e) => {
     e.preventDefault();
     const payload = { date, symptoms: symptoms.split(",").map((s) => s.trim()).filter(Boolean) };
@@ -42,10 +52,13 @@ export function Logs({ token }) {
       <div className="space-y-2 text-sm">
         {logs.length === 0 && <div className="text-neutral-400">No logs yet</div>}
         {logs.map((l) => (
-          <div key={l._id || l.date} className="rounded-md border p-3">
+          <div key={l._id || l.date} className="rounded-md border p-3 relative">
             <div className="text-xs text-neutral-500">{new Date(l.date).toDateString()}</div>
             <div className="mt-1 text-sm">Symptoms: {l.symptoms?.join(", ") || "—"}</div>
             {l.notes && <div className="mt-1 text-xs text-neutral-500">{l.notes}</div>}
+            {l._id && (
+              <button onClick={() => deleteLog(l._id)} className="absolute top-2 right-2 text-red-500 text-xs">Delete</button>
+            )}
           </div>
         ))}
       </div>

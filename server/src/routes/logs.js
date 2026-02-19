@@ -53,3 +53,18 @@ router.get("/", authRequired, async (req, res) => {
 
 export default router;
 
+// Delete a single daily log
+router.delete("/:id", authRequired, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const log = await DailyLog.findById(id);
+    if (!log) return res.status(404).json({ message: "Log not found" });
+    if (log.userId.toString() !== req.user.id) return res.status(403).json({ message: "Not authorized" });
+    await DailyLog.deleteOne({ _id: id });
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to delete log" });
+  }
+});
+

@@ -1,5 +1,6 @@
 import express from "express";
 import Cycle from "../models/Cycle.js";
+import DailyLog from "../models/DailyLog.js";
 import { authRequired } from "../middleware/auth.js";
 import { getPredictionForUser } from "../utils/cyclePrediction.js";
 
@@ -58,6 +59,27 @@ router.get("/prediction", authRequired, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to calculate prediction" });
+  }
+});
+
+// Delete a cycle and its associated daily logs within the cycle date range
+router.delete("/:id", authRequired, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const cycle = await Cycle.findById(id);
+    if (!cycle) return res.status(404).json({ message: "Cycle not found" });
+    if (cycle.userId.toString() !== req.user.id) return res.status(403).json({ message: "Not authorized" });
+
+    const start = cycle.startDate;
+    const end = cycle.endDate ? cycle.endDate : cycle.startDate;
+
+    await DailyLog.deleteMany({ userId: req.user.id, date: { $gte: start, $lte: end } });
+    await Cycle.deleteOne({ _id: cycle._id });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to delete cycle" });
   }
 });
 
