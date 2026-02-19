@@ -1,0 +1,86 @@
+SPOT ON — PERIOD TRACKER (MERN)
+
+PRODUCT GOALS - Predict menstrual cycle using previous data - Show
+current cycle phase - Send reminders for next period and ovulation -
+Provide secure user accounts and persistent dashboard - Responsive
+mobile-friendly UI
+
+USER WORKFLOW - Unlogged user lands on landing page with product
+overview - User signs up or logs in - After login user sees personal
+dashboard - Returning users open dashboard automatically if session
+exists
+
+CORE FEATURES - Cycle prediction engine based on historical cycles -
+Cycle phases: Menstrual, Follicular, Ovulation, Luteal - Period and
+ovulation reminders - Symptom and mood tracking - Calendar visualization
+of cycles - Health insights and trends - Profile settings and
+notification preferences - Data export and account deletion
+
+OPTIONAL IMPROVEMENTS - Irregular cycle handling - Fertility window
+estimation - Dark mode - Multi-device sync - Offline support
+
+TECH STACK (MERN) Frontend - React - Context API or Redux - Chart
+library for visualization
+
+Backend - Node.js - Express.js - JWT authentication - Scheduled jobs for
+reminders
+
+Database - MongoDB Atlas
+
+DATABASE SCHEMA
+
+User - _id - email - passwordHash - cyclePreferences -
+notificationSettings - createdAt
+
+Cycle - _id - userId - startDate - endDate - cycleLength -
+predictedNextPeriod - createdAt
+
+DailyLog - _id - userId - date - symptoms - mood - notes
+
+Reminder - _id - userId - type - schedule - enabled
+
+CYCLE PREDICTION LOGIC 1. Store start date of each period 2. Calculate
+average cycle length from last 3–6 cycles 3. Predict next period = last
+start date + average cycle length 4. Ovulation ≈ 14 days before
+predicted period 5. Phase detection based on day index within cycle 6.
+Recalculate after each new entry
+
+DASHBOARD COMPONENTS - Next period countdown - Current cycle phase -
+Calendar view - Symptom log form - Cycle history chart - Reminder
+settings
+
+API STRUCTURE
+
+Auth POST /api/auth/signup POST /api/auth/login
+
+Cycle POST /api/cycles GET /api/cycles GET /api/cycles/prediction
+
+Logs POST /api/logs GET /api/logs
+
+Reminders GET /api/reminders PUT /api/reminders
+
+DEVELOPMENT ROADMAP
+
+Phase 1 — Setup - Initialize MERN project - Configure MongoDB -
+Implement authentication
+
+Phase 2 — Core Tracking - Cycle CRUD operations - Dashboard UI -
+Calendar component
+
+Phase 3 — Prediction Engine - Average cycle calculation - Phase
+detection logic - Prediction display
+
+Phase 4 — Notifications - Reminder scheduler - Email or push
+notifications
+
+Phase 5 — Production Ready - Validation and error handling - Security
+hardening - Deployment
+
+SECURITY - Password hashing with bcrypt - JWT token authentication -
+HTTPS enforcement - Input validation - Rate limiting
+
+DEPLOYMENT Frontend: Vercel or Netlify Backend: Render or Railway
+Database: MongoDB Atlas
+
+FUTURE FEATURES - AI-based prediction refinement - Health report
+export - Wearable integration - Anonymous mode - Doctor sharing link

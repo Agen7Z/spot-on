@@ -1,0 +1,40 @@
+# Node
+node_modules/
+
+# Lockfiles
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+out/
+
+# Vite / client
+client/dist/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+
+# Coverage
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editors and IDEs
+.vscode/
+.idea/
+
+# Misc cache
+.cache/
+
+# Server & client node_modules (explicit)
+server/node_modules/
+client/node_modules/

@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+.react-calendar {
+    border: none;
+    width: 100%;
+    font-family: inherit;
+  }
+  
+  .react-calendar__tile--active {
+    background: #ec4899 !important;
+    color: white !important;
+    border-radius: 999px;
+  }
+
+/* Phase-based coloring on calendar tiles */
+.react-calendar__month-view__days__day.phase-period {
+  background: rgba(248, 113, 113, 0.18);
+  border-radius: 999px;
+}
+
+.react-calendar__month-view__days__day.phase-follicular {
+  background: rgba(56, 189, 248, 0.16);
+  border-radius: 999px;
+}
+
+.react-calendar__month-view__days__day.phase-ovulation {
+  background: rgba(250, 204, 21, 0.24);
+  border-radius: 999px;
+}
+
+.react-calendar__month-view__days__day.phase-luteal {
+  background: rgba(167, 139, 250, 0.18);
+  border-radius: 999px;
+}
+
+.react-calendar__month-view__days__day.phase-window {
+  box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.5);
+}
+
+.react-calendar {
+  border: none;
+  background: transparent;
+  width: 100%;
+}
+
+.react-calendar__tile {
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+
+.phase-period {
+  background: #fda4af33;
+}
+
+.phase-ovulation {
+  background: #f472b633;
+}
+
+.phase-window {
+  outline: 2px solid #ec4899;
+}
