@@ -51,7 +51,31 @@ router.get("/", authRequired, async (req, res) => {
   }
 });
 
-export default router;
+// Update a single daily log
+router.put("/:id", authRequired, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { date, symptoms = [], mood = "", notes = "" } = req.body;
+    const log = await DailyLog.findById(id);
+    if (!log) return res.status(404).json({ message: "Log not found" });
+    if (log.userId.toString() !== req.user.id) return res.status(403).json({ message: "Not authorized" });
+
+    if (date) {
+      const conflict = await DailyLog.findOne({ userId: req.user.id, date: new Date(date), _id: { $ne: id } });
+      if (conflict) return res.status(409).json({ message: "Log for that date already exists" });
+      log.date = new Date(date);
+    }
+
+    log.symptoms = symptoms;
+    log.mood = mood;
+    log.notes = notes;
+    await log.save();
+    res.json(log);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to update log" });
+  }
+});
 
 // Delete a single daily log
 router.delete("/:id", authRequired, async (req, res) => {
@@ -67,4 +91,6 @@ router.delete("/:id", authRequired, async (req, res) => {
     res.status(500).json({ message: "Failed to delete log" });
   }
 });
+
+export default router;
 
